@@ -1,0 +1,8 @@
+To compile:
+javac Hotel.java
+
+Then, to run:
+java Hotel
+
+To remove class files:
+rm *.class
