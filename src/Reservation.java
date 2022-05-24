@@ -13,7 +13,7 @@ public class Reservation {
         this.room = room;
         this.startDate = startDate;
         this.numDaysToStay = numDaysToStay;
-        totalCost =  room.getDailyRate() * numDaysToStay;
+        totalCost = numDaysToStay > 1 ? room.getDailyRate() * numDaysToStay : room.getDailyRate();
     }
 
     public LocalDate getStartDate() {

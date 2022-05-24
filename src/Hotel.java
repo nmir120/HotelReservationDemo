@@ -1,3 +1,4 @@
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,49 +56,55 @@ public class Hotel {
                     System.err.println("Error: Invalid room type.");
                     break;
                 }
-                System.out.println("**Note: The date range must be between today and the end of 2022**");
-                System.out.println("Please enter the beginning date in the following format: MM-DD");
+                System.out.println("Please enter the beginning date in the following format: MM-DD (date range must be between today and the end of 2022).");
                 String[] date = input.nextLine().split("-");
                 int month = Integer.parseInt(date[0]); 
                 int day = Integer.parseInt(date[1]);
-
-                System.out.println("Please enter the amount of days you would like to stay (beginning from the starting date you provided)");
+                try {   
+                    LocalDate.of(2022, month, day);
+                } catch (DateTimeException e) {
+                    System.err.println("Error: Invalid date detected.");
+                    break;
+                }
+                System.out.println("Please enter the amount of days you would like to stay (must be >=1, beginning from the starting date you provided)");
                 int numDaysToStay = input.nextInt();
+                if (numDaysToStay < 1) {
+                    System.err.println("Error: number of days to stay must be >= 1.");
+                    break;
+                }
                 input.nextLine();
                 LocalDate startDate = LocalDate.of(2022, month, day);
+                // Input validation
+                LocalDate today = LocalDate.now();
+                LocalDate lastDay = LocalDate.of(2022, 12, 31);
+                if (startDate.compareTo(today) < 0 || startDate.plusDays(numDaysToStay).compareTo(lastDay) > 0) {
+                    System.err.println("Error: Date range must be between today and end of 2022.");
+                    break;
+                }
                 Room room = c1.checkRoomAvailability(hotel.getRooms(), type, startDate, numDaysToStay);
 
-                if (choice.equals("1")) {
-                    if (room != null) {
+                if (room != null) {
+                    if (choice.equals("1")) {
                         System.out.println("Room " + room.getId() + " is of type " + room.getType() + " and is available from " + startDate + " to " + startDate.plusDays(numDaysToStay) + ".");
                         System.out.println("Would you like to book it? (y/n)");
                         choice = input.nextLine();
-                        if (choice.equals("y")) {
-                            Reservation res = c1.makeReservation(room, startDate, numDaysToStay);
-                            // Admin will update room availability according to reservation
-                            admin.updateRoomAvailability(res);
-                            System.out.println("Success! Room " + res.getRoom().getId() + " has been booked from " + res.getStartDate() + " to " + res.getStartDate().plusDays(res.getNumDaysToStay()) + ".");
-                            System.out.format("Total cost: $%.2f (daily rate: $%.2f)\n", res.getTotalCost(), room.getDailyRate());
+                        if (!choice.equals("y")) {
+                            System.out.println("Return to menu? (y/n)");
+                            if (!input.nextLine().equals("y")) break;
+                            else continue;
                         }
-                    } else {
-                        System.out.println("No room of the given type and date range is available.");
                     }
-                    System.out.println("Return to menu? (y/n)");
-                    if (!input.nextLine().equals("y")) break;
-                
-                } else if (choice.equals("2")) {
                     Reservation res = c1.makeReservation(room, startDate, numDaysToStay);
-                    if (res != null) {
-                        // Admin will update room availability according to reservation
-                        admin.updateRoomAvailability(res);
-                        System.out.println("Success! Room " + res.getRoom().getId() + " has been booked from " + res.getStartDate() + " to " + res.getStartDate().plusDays(res.getNumDaysToStay()) + ".");
-                        System.out.format("Total cost: $%.2f (daily rate: $%.2f)\n", res.getTotalCost(), room.getDailyRate());
-                    } else {
-                        System.out.println("The room you are trying to book is unavailable for the given date range.");
-                    }
-                    System.out.println("Return to menu? (y/n)");
-                    if (!input.nextLine().equals("y")) break;
+                    // Admin will update room availability according to reservation
+                    admin.updateRoomAvailability(res);
+                    System.out.println("Success! Room " + res.getRoom().getId() + " has been booked from " + res.getStartDate() + " to " + res.getStartDate().plusDays(res.getNumDaysToStay()) + ".");
+                    System.out.format("Total cost: $%.2f (daily rate: $%.2f)\n", res.getTotalCost(), room.getDailyRate());
+                } else {
+                    System.out.println("No room of the given type and date range is available.");
                 }
+                System.out.println("Return to menu? (y/n)");
+                if (!input.nextLine().equals("y")) break;
+                
             } else if (choice.equals("3")) {
                 ArrayList<Room> allRooms = hotel.getRooms();
                 for (Room r : allRooms) {
@@ -105,7 +112,6 @@ public class Hotel {
                 }
                 System.out.println("Return to menu? (y/n)");
                 if (!input.nextLine().equals("y")) break;
-                
             } else {
                 break;
             }

@@ -1,3 +1,4 @@
+** Make sure to change directory to src before executing the steps below **
 To compile:
 javac Hotel.java
 

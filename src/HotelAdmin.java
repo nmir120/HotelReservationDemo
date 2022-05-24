@@ -15,7 +15,7 @@ public class HotelAdmin extends User {
     public void updateRoomAvailability(Reservation reservation) {
         HashMap<LocalDate, Boolean> availability = reservation.getRoom().getAvailability();
         LocalDate startDate = reservation.getStartDate();
-        for (int i = 0; i < reservation.getNumDaysToStay(); i++) {
+        for (int i = 0; i <= reservation.getNumDaysToStay(); i++) {
             availability.put(startDate.plusDays(i), false);
         }
     }

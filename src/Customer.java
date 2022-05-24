@@ -13,8 +13,6 @@ public class Customer extends User {
     }
 
     public Reservation makeReservation(Room room, LocalDate startDate, int numDaysToStay) {
-        // update room availability - via HotelAdmin?
-        if (!room.isAvailable(startDate, numDaysToStay)) return null;
         Reservation res = new Reservation(1, this.username, room, startDate, numDaysToStay);
         reservations.add(res);
         return res;
