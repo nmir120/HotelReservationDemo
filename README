@@ -6,3 +6,9 @@ java Hotel
 
 To remove class files:
 rm *.class
+
+Assignment Description:
+Create a data model to support a hotel reservation system (class diagram with relationships) - the diagram can be submitted as PDF or JPG/PNG image.
+Implement this model using Java. In addition to the data model, implement a program (simple class with main method) that can take in user input to answer the following questions:
+Is a given room type available on a given date?
+Book a room of a given type for a specific date range.

@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Customer extends User {
     private ArrayList<Reservation> reservations;
-    private float balanceToPay;
+    private double balanceToPay;
 
     public Customer(String username, String name, int userId) {
         this.username = username;
@@ -18,6 +18,10 @@ public class Customer extends User {
         Reservation res = new Reservation(1, this.username, room, startDate, numDaysToStay);
         reservations.add(res);
         return res;
+    }
+
+    public Boolean makePayment() {
+        return true;
     }
 
 }

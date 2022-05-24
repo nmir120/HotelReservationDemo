@@ -18,7 +18,7 @@ public abstract class User {
         return null;
     }
 
-    private boolean cancelReservation(int reservationId) {
+    public boolean cancelReservation(int reservationId) {
         return true;
     }
 

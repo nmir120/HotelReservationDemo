@@ -12,7 +12,7 @@ public class Room {
         this.roomType = roomType;
         this.dailyRate = dailyRate;
         availability = new HashMap<LocalDate, Boolean>();
-        //make next two weeks available by default
+        // populate the remainder of 2022
         for (int i = 0; i <= 224; i++) {
             availability.put(LocalDate.now().plusDays(i), true);
         }
@@ -40,6 +40,5 @@ public class Room {
     public double getDailyRate() {
         return dailyRate;
     }
-    
 
 }
